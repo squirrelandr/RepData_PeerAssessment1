@@ -1,12 +1,15 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+title: "StepAnalysis1"
+author: "Jian Chen"
+date: "February 5, 2016"
+output: html_document
 ---
 
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-## Loading and preprocessing the data
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+**1 Loading and preprocessing the data**
 
 ```{r echo = TRUE}
 library(ggplot2)
@@ -15,9 +18,7 @@ activity$date <- as.Date(activity$date, "%Y-%m-%d")
 str(activity)
 ```
 
-
-
-## What is mean total number of steps taken per day?
+**2 What is mean total number of steps taken per day?**
 
 ```{r, echo=TRUE}
 totalSteps <- aggregate(activity$steps, list(activity$date), FUN = "sum")
@@ -30,8 +31,7 @@ summary(totalSteps)
 ```
 
 
-
-## What is the average daily activity pattern?
+**3 What is the average daily activity pattern?**
 
 ```{r, echo=TRUE}
 # I need to remove NA in this aggregation otherwise everything is NA
@@ -46,8 +46,8 @@ meanSteps[meanSteps$MeanSteps == max(meanSteps$MeanSteps),]$Interval
 - Interval 835 contains the maximum number of steps
 
 
+**4 Imputing missing values**
 
-## Imputing missing values
 Find out where the missing values are
 ```{r}
 colSums(is.na(activity))
@@ -77,9 +77,7 @@ summary((totalStepsImp))
 - The number of days when 10000 steps are taken increases a lot after imputation
 
 
-
-
-## Are there differences in activity patterns between weekdays and weekends?
+**5 Are there differences in activity patterns between weekdays and weekends?**
 
 ```{r}
 # add a new column with weekend/weekday annotation to each date
@@ -103,4 +101,3 @@ ggplot(meanStepsWD, aes(x=Interval, y=MeanSteps, color=WD)) + geom_line()
 
 ```
 
-- Weekdays and weekends have very different activity patterns.  There are more steps taken in the morning of weekdays than weekends.  But in the afternoon and evening, weekends have more steps taken.  Sleeping time patterns are similar across weekdays and weekends
